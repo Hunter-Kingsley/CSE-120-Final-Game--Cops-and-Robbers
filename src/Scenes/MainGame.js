@@ -21,13 +21,26 @@ class MainGame extends Phaser.Scene {
         this.tileset_Pico = this.map.addTilesetImage("Roads", "Pico_8_City");
 
         // Create the layers
+        this.fillerLayer = this.map.createLayer("Filler", this.tileset_Pico, 0, 0);
         this.wallsLayer = this.map.createLayer("Walls", this.tileset_Pico, 0, 0);
         this.roadLayer = this.map.createLayer("Roads", this.tileset_Pico, 0, 0);
         this.policeHouseLayer = this.map.createLayer("Pico_Police_House", this.tileset_Pico, 0, 0);
 
+        // Make non-player-accessable layers collidable
+        this.wallsLayer.setCollisionByProperty({
+            collides: true
+        });
+        this.policeHouseLayer.setCollisionByProperty({
+            collides: true
+        });
+
         // Create Player Car Sprite
         // Use setOrigin() to ensure the tile space computations work well
-        my.sprite.PlayerCar = this.add.sprite(this.tileXtoWorld(12), this.tileYtoWorld(25), "Player").setOrigin(0,0);
+        this.player = new Player(this, this.tileXtoWorld(12), this.tileYtoWorld(25), "Player", 0, 'right').setOrigin(0,0);
+
+        // Add collider for player and walls
+        this.physics.add.collider(this.player, this.wallsLayer);
+        this.physics.add.collider(this.player, this.policeHouseLayer);
 
         // Camera settings
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -49,17 +62,24 @@ class MainGame extends Phaser.Scene {
         // Tell EasyStar which tiles can be walked on
         this.finder.setAcceptableTiles(walkables);
 
-        this.activeCharacter = my.sprite.PlayerCar;
+        //this.activeCharacter = my.sprite.PlayerCar;
 
         // Handle mouse clicks
         // Handles the clicks on the map to make the character move
         // The this parameter passes the current "this" context to the
         // function this.handleClick()
         this.input.on('pointerup',this.handleClick, this);
+
+        // setup keyboard input
+        this.keys = this.input.keyboard.createCursorKeys();
+        this.keys.WKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.keys.AKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keys.SKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keys.DKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     }
 
     update() {
-
+        this.playerFSM.step();
     }
 
     tileXtoWorld(tileX) {
@@ -79,18 +99,32 @@ class MainGame extends Phaser.Scene {
         let grid = [];
         // Initialize grid as two-dimensional array
         // TODO: write initialization code
-        for (let i = 0; i < this.wallsLayer.layer.height; i++) {
+        for (let i = 0; i < this.fillerLayer.layer.height; i++) {
             grid[i] = [];
         }
         // Loop over layers to find tile IDs, store in grid
         // TODO: write this loop
-        for (let i = 0; i < this.wallsLayer.layer.height; ++i) {
-            for (let j = 0; j < this.wallsLayer.layer.width; ++j) {
-                let tile = this.wallsLayer.getTileAt(j, i);
+        for (let i = 0; i < this.fillerLayer.layer.height; ++i) {
+            for (let j = 0; j < this.fillerLayer.layer.width; ++j) {
+                let tile = this.fillerLayer.getTileAt(j, i);
                 let tileID = tile.index;
 
                 grid[i].push(tileID);
                 console.log(grid[i])
+            }
+        }
+
+        for (let i = 0; i < this.wallsLayer.layer.height; ++i) {
+            for (let j = 0; j < this.wallsLayer.layer.width; ++j) {
+                let tile = this.wallsLayer.getTileAt(j, i);
+                if (tile) {
+                let tileID = tile.index;
+
+                grid[i][j] = tileID;  
+                console.log(grid[i])
+                } else {
+                    continue;
+                }
             }
         }
 

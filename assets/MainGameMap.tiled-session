@@ -48,7 +48,7 @@
         "C:/Users/their/Documents/CMPM 120/Repositories/Pathfinder/assets/tiny-town-tileset.tmx"
     ],
     "project": "MainGameMap.tiled-project",
-    "property.type": "int",
+    "property.type": "bool",
     "recentFiles": [
         "C:/Users/their/Documents/CMPM 120/Repositories/Pathfinder/assets/tiny-town-tileset.tmx",
         "MainMap.tmx"
