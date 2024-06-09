@@ -34,9 +34,21 @@ class MainGame extends Phaser.Scene {
             collides: true
         });
 
-        // Create Player Car Sprite
+        // Initialize EasyStar pathfinder
+        this.finder_1 = new EasyStar.js();
+        this.finder_2 = new EasyStar.js();
+
+        // Create Player and Enemy Car Sprites
         // Use setOrigin() to ensure the tile space computations work well
         this.player = new Player(this, this.tileXtoWorld(12), this.tileYtoWorld(25), "Player", 0, 'right').setOrigin(0,0);
+
+        this.enemy_1 = new Enemy(this, this.tileXtoWorld(14), this.tileYtoWorld(14), "Enemy_1", this.finder_1, "1").setOrigin(0,0);
+
+        this.enemy_2 = new Enemy(this, this.tileXtoWorld(10), this.tileYtoWorld(14), "Enemy_2", this.finder_2, "2").setOrigin(0,0);
+
+        // Add invisible patrol points
+        this.patrol_point_1 = this.add.sprite(this.tileXtoWorld(12), this.tileYtoWorld(4), "Point");
+        this.patrol_point_2 = this.add.sprite(this.tileXtoWorld(12), this.tileYtoWorld(23), "Point");
 
         // Add collider for player and walls
         this.physics.add.collider(this.player, this.wallsLayer);
@@ -46,40 +58,20 @@ class MainGame extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.setZoom(this.SCALE);
 
-        // Create grid of visible tiles for use with path planning
-        let MainMapGrid = this.layersToGrid([this.roadLayer, this.policeHouseLayer, this.wallsLayer]);
-
-        let walkables = [45, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 312, 313, 134, 315, 316, 317, 318, 319, 320, 321, 322, 337, 338, 339, 304, 341, 342, 343, 344, 345, 346, 347];
-    
-        // Initialize EasyStar pathfinder
-        this.finder = new EasyStar.js();
-
-        // Pass grid information to EasyStar
-        // EasyStar doesn't natively understand what is currently on-screen,
-        // so, you need to provide it that information
-        this.finder.setGrid(MainMapGrid);
-
-        // Tell EasyStar which tiles can be walked on
-        this.finder.setAcceptableTiles(walkables);
-
-        //this.activeCharacter = my.sprite.PlayerCar;
-
-        // Handle mouse clicks
-        // Handles the clicks on the map to make the character move
-        // The this parameter passes the current "this" context to the
-        // function this.handleClick()
-        this.input.on('pointerup',this.handleClick, this);
-
         // setup keyboard input
         this.keys = this.input.keyboard.createCursorKeys();
         this.keys.WKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keys.AKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.keys.SKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keys.DKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+        console.log(this)
     }
 
     update() {
         this.playerFSM.step();
+        this.enemy_1.enemyFSM.step();
+        this.enemy_2.enemyFSM.step();
     }
 
     tileXtoWorld(tileX) {

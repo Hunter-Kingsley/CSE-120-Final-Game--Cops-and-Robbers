@@ -14,6 +14,7 @@ class Load extends Phaser.Scene {
 
         this.load.setPath("./assets/");
         this.load.tilemapTiledJSON("MainMap", "MainMap.tmj");
+        this.load.image("Point", "HD_transparent_picture.png");
     }
 
     create() {

@@ -5,7 +5,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this)           // add Player to existing scene
         scene.physics.add.existing(this)   // add physics body to scene
 
-        this.body.setSize(this.width-2, this.height-2)
+        this.body.setSize(this.width, this.height)
         this.body.setCollideWorldBounds(true)
         this.body.setDrag(0, 0)
         this.body.setFriction(0, 0)
@@ -25,7 +25,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 // player-specific state classes
 class IdleState extends State {
-
     execute(scene, player) {
         // use destructuring to make a local copy of the keyboard object
         const { WKey, AKey, SKey, DKey } = scene.keys

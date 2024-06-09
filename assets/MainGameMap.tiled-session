@@ -3,8 +3,9 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "C:/Users/their/Documents/CMPM 120/Repositories/Pathfinder/assets/tiny-town-tileset.tmx",
+    "activeFile": "MainMap.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
         "": {
@@ -23,15 +24,15 @@
             "scaleInEditor": 4
         },
         "MainMap.tmx": {
-            "scale": 2,
-            "selectedLayer": 2,
+            "scale": 1.5,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 213.75,
-                "y": 263
+                "x": 228.3333333333333,
+                "y": 234.66666666666669
             }
         },
         "MainMap.tmx#Roads": {
-            "scaleInDock": 5.5,
+            "scaleInDock": 2,
             "scaleInEditor": 3
         }
     },
@@ -44,14 +45,13 @@
     "map.tileWidth": 16,
     "map.width": 25,
     "openFiles": [
-        "MainMap.tmx",
-        "C:/Users/their/Documents/CMPM 120/Repositories/Pathfinder/assets/tiny-town-tileset.tmx"
+        "MainMap.tmx"
     ],
     "project": "MainGameMap.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "C:/Users/their/Documents/CMPM 120/Repositories/Pathfinder/assets/tiny-town-tileset.tmx",
-        "MainMap.tmx"
+        "MainMap.tmx",
+        "C:/Users/their/Documents/CMPM 120/Repositories/Pathfinder/assets/tiny-town-tileset.tmx"
     ],
     "tileset.embedInMap": true,
     "tileset.tileSize": {

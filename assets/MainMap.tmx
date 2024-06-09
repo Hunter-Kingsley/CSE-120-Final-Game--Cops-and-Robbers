@@ -5,9 +5,58 @@
  </editorsettings>
  <tileset firstgid="1" name="Roads" tilewidth="16" tileheight="16" tilecount="360" columns="24">
   <image source="Pico_8_City/Tilemap/tilemap_packed_bigger.png" width="384" height="240"/>
+  <tile id="19">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+    <property name="cost" type="int" value="100"/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+    <property name="cost" type="int" value="100"/>
+   </properties>
+  </tile>
+  <tile id="21">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+    <property name="cost" type="int" value="100"/>
+   </properties>
+  </tile>
+  <tile id="43">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+    <property name="cost" type="int" value="100"/>
+   </properties>
+  </tile>
   <tile id="44">
    <properties>
-    <property name="cost" type="int" value="3"/>
+    <property name="collides" type="bool" value="true"/>
+    <property name="cost" type="int" value="2"/>
+   </properties>
+  </tile>
+  <tile id="45">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+    <property name="cost" type="int" value="100"/>
+   </properties>
+  </tile>
+  <tile id="67">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+    <property name="cost" type="int" value="100"/>
+   </properties>
+  </tile>
+  <tile id="68">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+    <property name="cost" type="int" value="100"/>
+   </properties>
+  </tile>
+  <tile id="69">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+    <property name="cost" type="int" value="100"/>
    </properties>
   </tile>
   <tile id="82">
@@ -266,7 +315,7 @@
    </properties>
   </tile>
  </tileset>
- <layer id="4" name="Filler" width="25" height="30">
+ <layer id="4" name="Filler" width="25" height="30" visible="0">
   <data encoding="csv">
 317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,
 317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,
@@ -300,7 +349,7 @@
 317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317,317
 </data>
  </layer>
- <layer id="2" name="Walls" width="25" height="30" visible="0">
+ <layer id="2" name="Walls" width="25" height="30">
   <data encoding="csv">
 83,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,85,
 111,0,0,0,0,0,0,86,0,0,0,0,0,0,0,0,0,86,0,0,0,0,0,0,111,
@@ -314,11 +363,11 @@
 135,0,86,86,86,86,0,86,0,86,86,0,0,0,86,86,0,86,0,86,86,86,86,0,135,
 135,0,86,86,86,86,0,86,0,86,86,86,86,86,86,86,0,86,0,86,86,86,86,0,135,
 135,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,135,
-135,0,86,0,86,86,86,86,0,86,86,86,86,86,86,86,0,86,86,86,86,0,86,0,135,
-135,0,86,0,0,0,0,86,0,86,86,86,86,86,86,86,0,86,0,0,0,0,86,0,135,
-135,0,86,86,86,86,0,86,0,86,86,86,86,86,86,86,0,86,0,86,86,86,86,0,135,
-135,0,86,86,86,86,0,86,0,86,86,86,86,86,86,86,0,86,0,86,86,86,86,0,135,
-135,0,86,86,86,86,0,86,0,86,86,86,86,86,86,86,0,86,0,86,86,86,86,0,135,
+135,0,86,0,86,86,86,86,0,0,0,0,0,0,0,0,0,86,86,86,86,0,86,0,135,
+135,0,86,0,0,0,0,86,0,0,0,0,0,0,0,0,0,86,0,0,0,0,86,0,135,
+135,0,86,86,86,86,0,86,0,0,0,0,0,0,0,0,0,86,0,86,86,86,86,0,135,
+135,0,86,86,86,86,0,86,0,0,0,0,0,0,0,0,0,86,0,86,86,86,86,0,135,
+135,0,86,86,86,86,0,86,0,0,0,0,0,0,0,0,0,86,0,86,86,86,86,0,135,
 135,0,86,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,86,0,135,
 135,0,86,0,86,86,86,86,86,86,0,86,86,86,0,86,86,86,86,86,86,0,86,0,135,
 135,0,0,0,86,0,0,0,0,0,0,86,86,86,0,0,0,0,0,0,86,0,0,0,135,
