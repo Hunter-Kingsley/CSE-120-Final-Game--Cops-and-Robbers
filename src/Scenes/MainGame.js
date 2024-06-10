@@ -112,7 +112,7 @@ class MainGame extends Phaser.Scene {
         this.keys.DKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         // Create Info Text
-        my.text.score = this.add.bitmapText(10, 500, "Minecraft0", "Score: " + "00000");
+        my.text.score = this.add.bitmapText(10, 500, "Minecraft0", "Score: " + "0");
         my.text.score.setFontSize(30);
         my.text.score.setBlendMode(Phaser.BlendModes.ADD);
 
@@ -122,7 +122,14 @@ class MainGame extends Phaser.Scene {
 
         // Add Power Up status bar
         this.status_bar = this.add.sprite(325, 517, "Status_Bar");
-        console.log(this.status_bar)
+        this.status_bar.displayWidth = 0;
+
+        // debug key listener (assigned to F key)
+        this.input.keyboard.on('keydown-F', () => {
+            //my.sprite.player.x = 4100;
+            this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
+            this.physics.world.debugGraphic.clear()
+        }, this);
 
         console.log(this.player)
     }

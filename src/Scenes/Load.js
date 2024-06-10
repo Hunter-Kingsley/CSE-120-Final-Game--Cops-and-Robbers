@@ -16,6 +16,8 @@ class Load extends Phaser.Scene {
         this.load.setPath("./assets/");
         this.load.tilemapTiledJSON("MainMap", "MainMap.tmj");
         this.load.image("Point", "HD_transparent_picture.png");
+        this.load.image("Blue", "Pure_blue.png");
+        this.load.image("Cat", "cat-thumbs-up.png");
         this.load.image("Status_Bar", "Status_Bar.png");
         this.load.bitmapFont("Minecraft1", "Minecraft_1.png", "Minecraft.fnt");
         this.load.bitmapFont("Minecraft0", "Minecraft_0.png", "Minecraft.fnt");
@@ -27,7 +29,7 @@ class Load extends Phaser.Scene {
 
     create() {
 
-        this.scene.start("mainGameScene");
+        this.scene.start("startScene");
     }
 
     // Never get here since a new scene is started in create()

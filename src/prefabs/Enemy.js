@@ -9,7 +9,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.body.setCollideWorldBounds(true)
 
         // set custom enemy properties
-        this.chaseTimer = 15000    // in ms
+        this.chaseTimer = 20000    // in ms
         this.patrolTimer = 7000    // in ms
         this.type = enemyType
         console.log("I am type ", this.type);

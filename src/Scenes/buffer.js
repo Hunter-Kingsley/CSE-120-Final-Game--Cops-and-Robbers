@@ -4,6 +4,6 @@ class Buffer extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start("platformerScene");
+        this.scene.start("mainGameScene");
     }
 }
