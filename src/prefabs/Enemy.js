@@ -183,8 +183,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 class ChaseState extends State {
     enter(scene, enemy) {
 
-    // Set up the chase timer using a promise
-    this.chasePromise = new Promise((resolve) => {
+        // Set up the chase timer using a promise
+        this.chasePromise = new Promise((resolve) => {
             scene.time.delayedCall(enemy.chaseTimer, resolve)
         })
     

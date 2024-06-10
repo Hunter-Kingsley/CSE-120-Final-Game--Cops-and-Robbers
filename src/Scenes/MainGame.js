@@ -54,6 +54,16 @@ class MainGame extends Phaser.Scene {
 
         this.coinGroup = this.add.group(this.coins);
 
+        this.gems = this.map.createFromObjects("Power_Ups", {
+            name: "Gem",
+            key: "spritesheet_basic",
+            frame: 67
+        }); 
+
+        this.physics.world.enable(this.gems, Phaser.Physics.Arcade.STATIC_BODY);
+
+        this.gemGroup = this.add.group(this.gems);
+
         // Create Player and Enemy Car Sprites
         // Use setOrigin() to ensure the tile space computations work well
         this.player = new Player(this, this.tileXtoWorld(12), this.tileYtoWorld(25), "Player", 0, 'right').setOrigin(0,0);
@@ -82,6 +92,14 @@ class MainGame extends Phaser.Scene {
             this.updateScore();
         });
 
+        this.physics.add.overlap(this.player, this.gemGroup, (obj1, obj2) => {
+            obj2.destroy(); // remove coin on overlap
+            this.player.score += 24;
+            this.playerFSM.transition('idle');
+            this.playerFSM.transition('power');
+            this.updateScore();
+        });
+
         // Camera settings
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.setZoom(this.SCALE);
@@ -94,11 +112,19 @@ class MainGame extends Phaser.Scene {
         this.keys.DKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         // Create Info Text
-        my.text.score = this.add.bitmapText(10, 500, "Minecraft0", "Score: " + 0);
-        my.text.score.setFontSize(35);
+        my.text.score = this.add.bitmapText(10, 500, "Minecraft0", "Score: " + "00000");
+        my.text.score.setFontSize(30);
         my.text.score.setBlendMode(Phaser.BlendModes.ADD);
 
-        console.log(this)
+        my.text.power = this.add.bitmapText(180, 500, "Minecraft0", "Power:");
+        my.text.power.setFontSize(30);
+        my.text.power.setBlendMode(Phaser.BlendModes.ADD);
+
+        // Add Power Up status bar
+        this.status_bar = this.add.sprite(325, 517, "Status_Bar");
+        console.log(this.status_bar)
+
+        console.log(this.player)
     }
 
     update() {
@@ -113,131 +139,5 @@ class MainGame extends Phaser.Scene {
 
     tileYtoWorld(tileY) {
         return tileY * this.TILESIZE/2;
-    }
-
-    // layersToGrid
-    //
-    // Uses the tile layer information in this.map and outputs
-    // an array which contains the tile ids of the visible tiles on screen.
-    // This array can then be given to Easystar for use in path finding.
-    layersToGrid() {
-        let grid = [];
-        // Initialize grid as two-dimensional array
-        // TODO: write initialization code
-        for (let i = 0; i < this.fillerLayer.layer.height; i++) {
-            grid[i] = [];
-        }
-        // Loop over layers to find tile IDs, store in grid
-        // TODO: write this loop
-        for (let i = 0; i < this.fillerLayer.layer.height; ++i) {
-            for (let j = 0; j < this.fillerLayer.layer.width; ++j) {
-                let tile = this.fillerLayer.getTileAt(j, i);
-                let tileID = tile.index;
-
-                grid[i].push(tileID);
-                console.log(grid[i])
-            }
-        }
-
-        for (let i = 0; i < this.wallsLayer.layer.height; ++i) {
-            for (let j = 0; j < this.wallsLayer.layer.width; ++j) {
-                let tile = this.wallsLayer.getTileAt(j, i);
-                if (tile) {
-                let tileID = tile.index;
-
-                grid[i][j] = tileID;  
-                console.log(grid[i])
-                } else {
-                    continue;
-                }
-            }
-        }
-
-        for (let i = 0; i < this.policeHouseLayer.layer.height; ++i) {
-            for (let j = 0; j < this.policeHouseLayer.layer.width; ++j) {
-                let tile = this.policeHouseLayer.getTileAt(j, i);
-                if (tile) {
-                let tileID = tile.index;
-
-                grid[i][j] = tileID;  
-                console.log(grid[i])
-                } else {
-                    continue;
-                }
-            }
-        }
-
-        for (let i = 0; i < this.roadLayer.layer.height; ++i) {
-            for (let j = 0; j < this.roadLayer.layer.width; ++j) {
-                let tile = this.roadLayer.getTileAt(j, i);
-                if (tile) {
-                let tileID = tile.index;
-
-                grid[i][j] = tileID;  
-                console.log(grid[i])
-                } else {
-                    continue;
-                }
-            }
-        }
-
-        return grid;
-    }
-
-    handleClick(pointer) {
-        let x = pointer.x;
-        let y = pointer.y;
-        let toX = Math.floor(x/this.TILESIZE);
-        var toY = Math.floor(y/this.TILESIZE);
-        var fromX = Math.floor(this.activeCharacter.x/(this.TILESIZE/2));
-        var fromY = Math.floor(this.activeCharacter.y/(this.TILESIZE/2));
-        console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
-    
-        this.finder.findPath(fromX, fromY, toX, toY, (path) => {
-            if (path === null) {
-                console.warn("Path was not found.");
-            } else {
-                console.log(path);
-                this.moveCharacter(path, this.activeCharacter);
-            }
-        });
-        this.finder.calculate(); // ask EasyStar to compute the path
-        // When the path computing is done, the arrow function given with
-        // this.finder.findPath() will be called.
-    }
-    
-    moveCharacter(path, character) {
-        // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
-        var tweens = [];
-        for(var i = 0; i < path.length-1; i++){
-            var ex = path[i+1].x;
-            var ey = path[i+1].y;
-            tweens.push({
-                x: ex*this.map.tileWidth,
-                y: ey*this.map.tileHeight,
-                duration: 200
-            });
-        }
-    
-        this.tweens.chain({
-            targets: character,
-            tweens: tweens
-        });
-
-    }
-
-    // A function which takes as input a tileset and then iterates through all
-    // of the tiles in the tileset to retrieve the cost property, and then 
-    // uses the value of the cost property to inform EasyStar, using EasyStar's
-    // setTileCost(tileID, tileCost) function.
-    setCost(tileset) {
-        for (let tileID = tileset.firstgid; tileID < tileset.total; tileID++) {
-            let props = tileset.getTileProperties(tileID);
-            if (props != null) {
-                if (props.cost != null) {
-                    this.finder.setTileCost(tileID, props.cost);
-                }
-            }
-        }
     }
 }

@@ -20,6 +20,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.playerFSM = new StateMachine('idle', {
             idle: new IdleState(),
             move: new MoveState(),
+            power: new PowerState(),
         }, [scene, this])   // pass these as arguments to maintain scene/object context in the FSM
     }
 }
@@ -64,5 +65,64 @@ class MoveState extends State {
             // set the velocity only if a key is pressed
             player.body.setVelocity(player.playerVelocity * moveDirection.x, player.playerVelocity * moveDirection.y)
         } 
+    }
+}
+
+class PowerState extends State {
+    enter(scene, player) {
+
+        scene.player.setTexture("Better_Player");
+
+        // Store the start time of the power state
+        this.startTime = scene.time.now
+        this.remainingTime = player.powerUpDuration
+
+        // Clear any existing power-up timer
+        if (this.timerEvent) {
+            this.timerEvent.remove(false)
+        }
+        
+        // Set a timer to revert back to the previous state
+        this.timerEvent = scene.time.delayedCall(player.powerUpDuration, () => {
+            scene.player.setTexture("Player");
+            this.stateMachine.transition('idle')
+        }, [], this)
+
+        console.log(scene.time)
+    }
+
+    execute(scene, player) {
+        // use destructuring to make a local copy of the keyboard object
+        const { WKey, AKey, SKey, DKey } = scene.keys
+
+        // handle movement
+        let moveDirection = new Phaser.Math.Vector2(0, 0)
+        if(WKey.isDown) {
+            moveDirection.y = -1
+            player.direction = 'up'
+        } else if(SKey.isDown) {
+            moveDirection.y = 1
+            player.direction = 'down'
+        }
+        if(AKey.isDown) {
+            moveDirection.x = -1
+            player.direction = 'left'
+        } else if(DKey.isDown) {
+            moveDirection.x = 1
+            player.direction = 'right'
+        }
+        
+        if (moveDirection.x !== 0 || moveDirection.y !== 0 ) {
+            // set the velocity only if a key is pressed
+            player.body.setVelocity(player.playerVelocity * moveDirection.x, player.playerVelocity * moveDirection.y)
+        } 
+
+        // Update the remaining time
+        const elapsedTime = scene.time.now - this.startTime
+        this.remainingTime = Math.max(0, player.powerUpDuration - elapsedTime)
+
+        // Calculate the width of the status bar based on the remaining time
+        const statusBarWidth = 100 * (this.remainingTime / player.powerUpDuration)
+        scene.status_bar.displayWidth = statusBarWidth
     }
 }

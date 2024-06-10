@@ -11,10 +11,12 @@ class Load extends Phaser.Scene {
         this.load.image("Enemy_1", "tile_0132.png");
         this.load.image("Enemy_2", "tile_0133.png");
         this.load.image("Player", "tile_0149.png");
+        this.load.image("Better_Player", "tile_0152.png");
 
         this.load.setPath("./assets/");
         this.load.tilemapTiledJSON("MainMap", "MainMap.tmj");
         this.load.image("Point", "HD_transparent_picture.png");
+        this.load.image("Status_Bar", "Status_Bar.png");
         this.load.bitmapFont("Minecraft1", "Minecraft_1.png", "Minecraft.fnt");
         this.load.bitmapFont("Minecraft0", "Minecraft_0.png", "Minecraft.fnt");
 
