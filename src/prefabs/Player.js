@@ -11,6 +11,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setFriction(0, 0)
 
         // set custom player properties
+        this.score = 0
         this.direction = direction 
         this.playerVelocity = 100    // in pixels
         this.powerUpDuration = 10000    // in ms

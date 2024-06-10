@@ -9,7 +9,7 @@
     ],
     "fileStates": {
         "": {
-            "scaleInDock": 5.5
+            "scaleInDock": 1.5
         },
         "C:/Users/their/Documents/CMPM 120/Repositories/Pathfinder/assets/tiny-town-tileset.tmx": {
             "scale": 1.497734375,
@@ -37,7 +37,7 @@
         }
     },
     "last.exportedFilePath": "C:/Users/their/Documents/CMPM 120/Repositories/Final Game (4)/assets",
-    "last.imagePath": "C:/Users/their/Documents/CMPM 120/Repositories/Final Game (4)/assets/Pico_8_City/Tilemap",
+    "last.imagePath": "C:/Users/their/Documents/CMPM 120/Repositories/Final Game (4)/assets/kenney_pixel-platformer/Tilemap",
     "map.height": 30,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",

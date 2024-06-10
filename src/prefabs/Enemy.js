@@ -244,6 +244,8 @@ class PatrolState extends State {
         if (enemy.type == "1") {
             enemy.handleMove(scene.patrol_point_1, enemy, scene);
         } else {
+            enemy.modifierX = 0;
+            enemy.modifierY = 0;
             enemy.handleMove(scene.patrol_point_2, enemy, scene);
         }
 

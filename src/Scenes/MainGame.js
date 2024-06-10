@@ -8,6 +8,11 @@ class MainGame extends Phaser.Scene {
         this.SCALE = 2.0;
         this.TILEWIDTH = 25;
         this.TILEHEIGHT = 30;
+        this.COINS_COLLECTED = 0; // 334 Total
+    }
+
+    updateScore() {
+        my.text.score.setText("Score: " + this.player.score);
     }
 
     create() {
@@ -38,6 +43,17 @@ class MainGame extends Phaser.Scene {
         this.finder_1 = new EasyStar.js();
         this.finder_2 = new EasyStar.js();
 
+        // Create Collectible Objects
+        this.coins = this.map.createFromObjects("Coins", {
+            name: "coin",
+            key: "spritesheet_basic",
+            frame: 151
+        }); 
+
+        this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
+
+        this.coinGroup = this.add.group(this.coins);
+
         // Create Player and Enemy Car Sprites
         // Use setOrigin() to ensure the tile space computations work well
         this.player = new Player(this, this.tileXtoWorld(12), this.tileYtoWorld(25), "Player", 0, 'right').setOrigin(0,0);
@@ -50,9 +66,21 @@ class MainGame extends Phaser.Scene {
         this.patrol_point_1 = this.add.sprite(this.tileXtoWorld(12), this.tileYtoWorld(4), "Point");
         this.patrol_point_2 = this.add.sprite(this.tileXtoWorld(12), this.tileYtoWorld(23), "Point");
 
+        // Add invisible respawn points
+        this.respawn_point_1 = this.add.sprite(this.tileXtoWorld(14), this.tileYtoWorld(14), "Point");
+        this.respawn_point_2 = this.add.sprite(this.tileXtoWorld(10), this.tileYtoWorld(14), "Point");
+
         // Add collider for player and walls
         this.physics.add.collider(this.player, this.wallsLayer);
         this.physics.add.collider(this.player, this.policeHouseLayer);
+
+        // Add Colision for Collectibles
+        this.physics.add.overlap(this.player, this.coinGroup, (obj1, obj2) => {
+            obj2.destroy(); // remove coin on overlap
+            this.player.score += 12;
+            this.COINS_COLLECTED += 1;
+            this.updateScore();
+        });
 
         // Camera settings
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -64,6 +92,11 @@ class MainGame extends Phaser.Scene {
         this.keys.AKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.keys.SKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keys.DKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+        // Create Info Text
+        my.text.score = this.add.bitmapText(10, 500, "Minecraft0", "Score: " + 0);
+        my.text.score.setFontSize(35);
+        my.text.score.setBlendMode(Phaser.BlendModes.ADD);
 
         console.log(this)
     }
