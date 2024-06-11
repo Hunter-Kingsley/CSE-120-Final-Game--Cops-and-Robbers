@@ -20,7 +20,7 @@ let config = {
     },
     width: 800,
     height: 1104,
-    scene: [Load, MainGame, Buffer, Start, Credits]
+    scene: [Load, MainGame, Start, Credits, Win, Lose]
 }
 
 var cursors;

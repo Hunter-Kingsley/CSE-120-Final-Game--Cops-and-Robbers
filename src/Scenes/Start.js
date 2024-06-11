@@ -31,6 +31,7 @@ class Start extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.keys.CKey)) {
+            //this.scene.start("creditsScene");
             this.scene.start("creditsScene");
         }
     }

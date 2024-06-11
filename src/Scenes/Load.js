@@ -19,6 +19,8 @@ class Load extends Phaser.Scene {
         this.load.image("Blue", "Pure_blue.png");
         this.load.image("Cat", "cat-thumbs-up.png");
         this.load.image("Status_Bar", "Status_Bar.png");
+        this.load.image("Win_pic", "robber_win.png");
+        this.load.image("Lose_pic", "robber_lose.png");
         this.load.bitmapFont("Minecraft1", "Minecraft_1.png", "Minecraft.fnt");
         this.load.bitmapFont("Minecraft0", "Minecraft_0.png", "Minecraft.fnt");
 

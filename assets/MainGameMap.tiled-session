@@ -25,14 +25,17 @@
         },
         "MainMap.tmx": {
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 228.3333333333333,
-                "y": 234.66666666666669
+                "x": 247.66666666666669,
+                "y": 118.66666666666669
             }
         },
+        "MainMap.tmx#Platformer": {
+            "scaleInDock": 4
+        },
         "MainMap.tmx#Roads": {
-            "scaleInDock": 2,
+            "scaleInDock": 3,
             "scaleInEditor": 3
         }
     },
