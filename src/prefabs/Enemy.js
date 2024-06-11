@@ -34,6 +34,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.enemyFSM = new StateMachine('patrol', {
             chase: new ChaseState(),
             patrol: new PatrolState(),
+            scared: new scaredState()
         }, [scene, this])   // pass these as arguments to maintain scene/object context in the FSM
 
         //Store the current player location
@@ -182,14 +183,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 // enemy-specific state classes
 class ChaseState extends State {
     enter(scene, enemy) {
+        enemy.angle = 0;
 
         // Set up the chase timer using a promise
-        this.chasePromise = new Promise((resolve) => {
+        enemy.currentPromise = new Promise((resolve) => {
             scene.time.delayedCall(enemy.chaseTimer, resolve)
         })
     
-        this.chasePromise.then(() => {
-            this.stateMachine.transition('patrol')
+        enemy.currentPromise.then(() => {
+            this.stateMachine.transition('patrol') 
         })
     }
 
@@ -253,5 +255,39 @@ class PatrolState extends State {
         scene.time.delayedCall(enemy.patrolTimer, () => {
             this.stateMachine.transition('chase')
         })
+    }
+}
+
+class scaredState extends State {
+    enter(scene, enemy) {
+
+        scene.player.score += 120;
+        
+        scene.tweens.killTweensOf(enemy);
+        if (enemy.type == "1") {
+            enemy.handleMove(scene.respawn_point_1, enemy, scene);
+        } else {
+            enemy.modifierX = 0;
+            enemy.modifierY = 0;
+            enemy.handleMove(scene.respawn_point_2, enemy, scene);
+        }
+
+        // Set up scared promise
+        enemy.currentPromise = new Promise((resolve) => {
+            scene.time.delayedCall(enemy.patrolTimer, resolve)
+        })
+    
+        enemy.currentPromise.then(() => {
+            enemy.angle = 0;
+            this.stateMachine.transition('chase')
+        })
+    }
+
+    execute(scene, enemy) {
+        enemy.angle -= 5;
+
+        if (enemy.angle < -170) {
+            enemy.angle = 90;
+        }
     }
 }

@@ -88,7 +88,8 @@ class MainGame extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.coinGroup, (obj1, obj2) => {
             obj2.destroy(); // remove coin on overlap
             this.player.score += 12;
-            this.COINS_COLLECTED += 1;
+            this.COINS_COLLECTED++;
+            console.log(this.COINS_COLLECTED)
             this.updateScore();
         });
 
@@ -131,6 +132,17 @@ class MainGame extends Phaser.Scene {
             this.physics.world.debugGraphic.clear()
         }, this);
 
+        // Add colision check for player and enemy
+        this.physics.add.overlap(this.player, [this.enemy_1, this.enemy_2], (obj1, obj2) => {
+            if (this.playerFSM.state == "power") {
+                if (obj2.enemyFSM.state != "scared") {
+                    obj2.enemyFSM.transition('scared');
+                }
+            } else {
+                this.scene.start("loseScene");
+            }
+        });
+
         console.log(this.player)
     }
 
@@ -138,6 +150,10 @@ class MainGame extends Phaser.Scene {
         this.playerFSM.step();
         this.enemy_1.enemyFSM.step();
         this.enemy_2.enemyFSM.step();
+
+        if (this.COINS_COLLECTED >= 326) {
+            this.scene.start("winScene");
+        }
     }
 
     tileXtoWorld(tileX) {
